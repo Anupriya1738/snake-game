@@ -11,7 +11,7 @@ let snakearray = [
 let food = { x: Math.round(2 + (24 - 2) * Math.random()), y: Math.round(2 + (16 - 2) * Math.random()) }
 let lastpaint = 0;
 
-let speed = 10;
+let speed = 5;
 
 let gamestart = 0; // a flag to check if game started
 let score = 0;
@@ -74,18 +74,19 @@ function imgrotate(element){
 
 }
 function randomgenerate(){
-    snakearray.forEach(function(e,index){
-        if(e.x == food.x && e.y == food.y){
-            food = randomgenerate();
-            
-        }
-
-    });
+    
     let a = 2;
     let b = 24;
     let c = 2;
     let d = 16
     food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(c + (d - c) * Math.random()) }
+    snakearray.forEach(function(e){
+        if(e.x === food.x && e.y === food.y){
+            food = randomgenerate();
+            
+        }
+
+    });
     return food;
 }
 
@@ -126,13 +127,9 @@ function startgame() {
         // unshift adds an element to the begibning of an array and return new length of the array
         foodsound.play();
         snakearray.unshift({ x: snakearray[0].x + inputdir.x, y: snakearray[0].y + inputdir.y });
-        let a = 2;
-        let b = 24;
-        let c = 2;
-        let d = 16
-        food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(c + (d - c) * Math.random()) }
+        
         food = randomgenerate();
-
+        
         score += 1;
         if( (score%4)  == 0)
             speed+=2;
@@ -154,19 +151,21 @@ function startgame() {
 
     // since we don't want to add a snake if a snake is already present in the board
   
-    
+     //display the snake
+     
     board.innerHTML = "";
-    //display the snake
+   
     snakearray.forEach(function (e, index) {
         // we will create an element called snake
         snake = document.createElement('div');
         snake.style.gridRowStart = e.y;
         snake.style.gridColumnStart = e.x;
-        snake.id = "imghead";
         console.log('out');
-        imgrotate(snake);
+      
+        
         if (index == 0) {//adding head of snake
             snake.className = "head";
+            imgrotate(snake);
         }
 
         else { // adding body of snake
@@ -177,15 +176,14 @@ function startgame() {
     });
 
     //display the food
-    snakearray.forEach(function () {
+  
         snakefood = document.createElement('div');
         snakefood.style.gridRowStart = food.y;
         snakefood.style.gridColumnStart = food.x;
         snakefood.className = "food";
         
         board.appendChild(snakefood);
-    });
-
+   
     //display the score
     
     scorebox.innerHTML = "Score: " + score;
@@ -213,13 +211,13 @@ function isvalidkey(element){
     if(element === "ArrowUp" && pressedkey === "ArrowDown"){
         return false;
     } 
-    if(element == "ArrowDown" && pressedkey === "ArrowUp"){
+    if(element === "ArrowDown" && pressedkey === "ArrowUp"){
         return false;
     } 
-    if(element == "ArrowLeft" && pressedkey === "ArrowRight"){
+    if(element === "ArrowLeft" && pressedkey === "ArrowRight"){
         return false;
     } 
-    if(element == "ArrowRight" && pressedkey === "ArrowLeft"){
+    if(element === "ArrowRight" && pressedkey === "ArrowLeft"){
         return false;
 
     }
